@@ -1,0 +1,91 @@
+﻿@{
+    Layout = "";
+    ViewBag.Title = "Index";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/themes/base/css", "~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="../../Scripts/swfobject.js" type="text/javascript"></script>
+    <script src="../../Scripts/downloadify.min.js" type="text/javascript"></script>
+</head>
+<body>
+<span style="font-size:1.5em;">For More Information, visit</span>
+ <a href="http://techbrij.com" style="font-size:1.6em;font-style:italic;">techbrij.com</a>
+    <p id="btnDownloadify">
+        You must have Flash 10 installed to download this file.
+    </p>
+    <input type="hidden" id="hdnData">
+    @Scripts.Render("~/bundles/jquery")
+    <script>
+//       $.ajax({
+//           url: 'api/data?IsLengthOnly=false',
+//           async: false,
+//           success: function (data) {
+
+//           }
+//       });      
+
+        var size;
+        $.ajax({
+            url: 'api/data?IsLengthOnly=true',
+            async: false,
+            success: function (data) {
+                size = parseInt(data);
+            }
+        });
+        var totalThreads = 4;
+        var maxSize = parseInt(size / totalThreads, 10) + (size % totalThreads > 0 ? 1 : 0);
+        var ajaxRequests = [];
+        var results = [];
+        function reqToServer(reqNo) {
+            var range = "bytes=" + (reqNo * maxSize) + "-" + ((reqNo + 1) * maxSize - 1);
+            return $.ajax({
+                url: 'api/data?IsLengthOnly=false',
+                headers: { Range: range },
+                success: function (data) {
+                    results[reqNo] = data;
+                }
+            });
+        }
+
+        for (var i = 0; i < totalThreads; i++) {
+            ajaxRequests.push(reqToServer(i));
+        }
+        var defer = $.when.apply($, ajaxRequests);
+        defer.done(function (args) {
+            var output = '';
+            for (var i = 0; i < totalThreads; i++) {
+                output = output + results[i];
+            }
+            $('#hdnData').val(output);
+        });
+
+
+        Downloadify.create('btnDownloadify', {
+            filename: function () {
+                return 'sample.csv';
+            },
+            data: function () {
+                return document.getElementById('hdnData').value;
+            },
+            onComplete: function () { },
+            onCancel: function () { },
+            onError: function () { alert('You must put something in the File Contents or there will be nothing to save!'); },
+            swf: '/Content/downloadify.swf',
+            downloadImage: '/Content/download.png',
+            width: 100,
+            height: 30,
+            transparent: true,
+            append: false
+        });
+
+       
+  
+    </script>
+</body>
+</html>

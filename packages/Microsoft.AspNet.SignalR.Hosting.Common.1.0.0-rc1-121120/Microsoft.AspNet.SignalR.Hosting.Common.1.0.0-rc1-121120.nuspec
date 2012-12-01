@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
+  <metadata>
+    <id>Microsoft.AspNet.SignalR.Hosting.Common</id>
+    <version>1.0.0-rc1-121120</version>
+    <title>Microsoft ASP.NET SignalR Common Hosting Libraries (nightly 2012 Nov 20)</title>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <licenseUrl>http://aspnetwebstack.codeplex.com/license</licenseUrl>
+    <projectUrl>http://www.asp.net/signalR</projectUrl>
+    <iconUrl>https://nugetgallery.blob.core.windows.net/icons/Microsoft.AspNet.SignalR.Hosting.Common.1.0.0-rc1-121120.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Assembly containing common components for implementing SignalR hosts.</description>
+    <summary>Assembly containing common components for implementing SignalR hosts.</summary>
+    <tags>Microsoft AspNet SignalR AspNetSignalR Hosting Common</tags>
+    <dependencies>
+      <dependency id="Microsoft.AspNet.SignalR.Core" version="1.0.0-rc1-121120" />
+    </dependencies>
+  </metadata>
+</package>
